@@ -1,0 +1,6 @@
+echo "# tool" >> README.md
+git init
+git add README.md
+git commit -m "first commit"
+git remote add origin git@github.com:lx5255/tool.git
+git push -u origin master
