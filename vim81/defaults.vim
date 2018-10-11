@@ -132,7 +132,6 @@ if has('langmap') && exists('+langremap')
   set nolangremap
 endif
 
-
 " ============================================================================
 "				<< 基判断操作系统是否是 Windows 还是 Linux >>								
 " ============================================================================
@@ -296,9 +295,66 @@ function! ToggleQf()
   " echo "here1"
 endfunction
 
+
+
+
+function!  Cscope_init()
+	" ---cscope设置
+	if has("cscope")
+		" 先断开先前的cscope链接
+		cs kill -1
+		" 设定可以使用 quickfix 窗口来查看 cscope 结果
+		set cscopequickfix=s-,c-,d-,i-,t-,e-
+		" 使支持用 Ctrl+]  和 Ctrl+t 快捷键在代码间跳转
+		set cscopetag
+		" 如果你想反向搜索顺序设置为1
+		set csto=0
+		" 在当前目录中添加任何数据库
+		if filereadable("cscope.out") 
+			cs add cscope.out
+			normal :<CR>
+		" 否则添加数据库环境中所指出的 
+		elseif $CSCOPE_DB != "" 
+			cs add $CSCOPE_DB 
+		endif 
+		set cscopeverbose 
+		" 自定义快捷键设置：针对光标在文件窗口
+		nmap <Leader>fs :cs find s <C-R>=expand("<cword>")<CR><CR>:botright copen 6<CR>
+		vmap <Leader>fs <C-C>:cs find s <S-Insert><CR><CR>:botright copen 6<CR>
+		nmap <Leader>fg :cs find g <C-R>=expand("<cword>")<CR><CR>
+		nmap <Leader>fc :cs find c <C-R>=expand("<cword>")<CR><CR>:botright copen 6<CR>
+		nmap <Leader>ft :cs find t <C-R>=expand("<cword>")<CR><CR>:botright copen 6<CR>	
+		vmap <Leader>ft <C-C>:cs find t <S-Insert><CR><CR>:botright copen 6<CR>
+		nmap <Leader>fe :cs find e <C-R>=expand("<cword>")<CR><CR>:botright copen 6<CR>	
+		nmap <Leader>ff :cs find f <C-R>=expand("<cfile>")<CR><CR>
+		nmap <Leader>fi :cs find i ^<C-R>=expand("<cfile>")<CR>$<CR>:botright copen 6<CR>
+		nmap <Leader>fd :cs find d <C-R>=expand("<cword>")<CR><CR>:botright copen 6<CR>	
+		" 自定义快捷键设置：针对光标在命令输入窗口
+		nmap ;fs :cscope find s 
+		nmap ;fg :cscope find g 
+		nmap ;fc :cscope find c 
+		nmap ;ft :cscope find t 
+		nmap ;fe :cscope find e 
+		nmap ;ff :cscope find f 
+		nmap ;fi :cscope find i 
+		nmap ;fd :cscope find d 
+	endif
+	" ---lookupfile设置
+	" if filereadable("filenametags")
+		let g:LookupFile_TagExpr = '"./filenametags"'
+	" endif
+endfunction
+
+function!  CscopeSync()
+	cs kill -1
+       !bash sync.sh
+	call Cscope_init()
+endfunction
+
 " vundle 环境设置 
 set nocompatible              " be iMproved, required 
 filetype off  
+
 
 set rtp+=/usr/share/vim/vim81/bundle/vundle.vim 
 
@@ -313,7 +369,14 @@ Plugin 'git://github.com/scrooloose/nerdtree.git'
 Plugin 'vim-airline/vim-airline'  "状态栏，buffer美化
 Plugin 'vim-airline/vim-airline-themes'
 Plugin 'git://github.com/kien/ctrlp.vim.git'
+"Plugin 'taglist.vim'
 
+Plugin 'vim-scripts/lookupfile'
+Plugin 'vim-scripts/genutils'
+Plugin 'mbbill/echofunc'
+"Plugin 'vim-scripts/tComment'
+"Plugin 'vim-scripts/taglist.vim'
+Plugin 'Yggdroot/indentLine'
   
 " 插件列表结束  
 call vundle#end()  
@@ -352,13 +415,15 @@ nmap cl :make clean -j&&make clean_libs -j<CR>
 nmap <F2> :NERDTreeToggle<CR>
 nmap <C-f> :CtrlP<CR>
 nmap <F1> :call ToggleQf()<CR>
+map <BackSpace> <Del>
+nmap sy :call CscopeSync()<CR> 
 
 "nmap gre :!find . -name '*.php' -exec grep -i -nH "" {} \;//<Left><Left><Left><Left><Left><Left><Left><Left><Left><Left><Left>
 
-
+set nocompatible
 set backspace=indent,eol,start				" 使回格键（backspace）正常处理indent, eol, start等
 
- "set whichwrap+=<,>,h,l		" 允许backspace和光标键跨越行边界
+"set whichwrap+=<,>,h,l		" 允许backspace和光标键跨越行边界
 "set nowrap 				" 禁止折叠行
 
 
@@ -486,6 +551,7 @@ set smartindent
 "Tab键的宽度
 set shiftwidth=4
 set tabstop=4
+
 
  
  "设置buffer的主题
