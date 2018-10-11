@@ -347,7 +347,7 @@ endfunction
 
 function!  CscopeSync()
 	cs kill -1
-       !bash sync.sh
+       !bash syn.sh
 	call Cscope_init()
 endfunction
 
@@ -375,7 +375,7 @@ Plugin 'vim-scripts/lookupfile'
 Plugin 'vim-scripts/genutils'
 Plugin 'mbbill/echofunc'
 "Plugin 'vim-scripts/tComment'
-"Plugin 'vim-scripts/taglist.vim'
+Plugin 'vim-scripts/taglist.vim'
 Plugin 'Yggdroot/indentLine'
   
 " 插件列表结束  
