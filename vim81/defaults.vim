@@ -807,8 +807,8 @@ if (g:OmniCppComplete_en)
 	" let OmniCpp_MayCompleteScope = 1    " 输入 :: 后自动补全
 	" let OmniCpp_DefaultNamespaces = ["std", "_GLIBCXX_STD"]
 	"
-	set autochdir
-	set tags=tags;
+	" set autochdir
+	" set tags=tags;
 endif
 
 
@@ -840,6 +840,7 @@ if (g:ctrlp_en)
 	let g:ctrlp_funky_matchtype = 'path'
 	" 高亮显示高级语言关键字
 	let g:ctrlp_funky_syntax_highlight = 1
+    let g:ctrlp_working_path_mode = 'c'
 endif
 
 " -------------------------------------------------------------
