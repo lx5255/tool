@@ -217,6 +217,52 @@ endif
 
 
 
+" ---界面设置
+if (g:islinux)
+	" colorscheme Tomorrow-Night-Eighties         " 设定配色方案
+	colorscheme elflord         " 设定配色方案
+	let g:solarized_en = 0
+	if (g:solarized_en)
+		syntax enable
+		" set background=dark
+		set background=light
+		" let g:solarized_termcolors=256
+		colorscheme solarized		" 设定配色方案
+		" option name default optional ------------------------------------------------
+		let g:solarized_termcolors= 16 | 256 
+		let g:solarized_termtrans = 0 | 1 
+		let g:solarized_degrade = 0 | 1 
+		let g:solarized_bold = 1 | 0 
+		let g:solarized_underline = 1 | 0 
+		let g:solarized_italic = 1 | 0 
+		let g:solarized_contrast = "normal"| "high" or "low" 
+		let g:solarized_visibility= "normal"| "high" or "low"
+	endif
+else
+	" colorscheme molokai         " 设定配色方案
+	colorscheme Tomorrow-Night-Eighties         " 设定配色方案
+	"
+	let g:solarized_en = 1
+	if (g:solarized_en)
+		syntax enable
+		set background=dark
+		" set background=light
+		" let g:solarized_termcolors=256
+		colorscheme solarized		" 设定配色方案
+		" option name default optional ------------------------------------------------
+		let g:solarized_termcolors= 16 | 256 
+		let g:solarized_termtrans = 0 | 1 
+		let g:solarized_degrade = 0 | 1 
+		let g:solarized_bold = 1 | 0 
+		let g:solarized_underline = 1 | 0 
+		let g:solarized_italic = 1 | 0 
+		let g:solarized_contrast = "normal"| "high" or "low" 
+		let g:solarized_visibility= "normal"| "high" or "low"
+	endif
+endif
+
+
+
 au GUIEnter * simalt ~x		" 启动窗口最大化
 syntax on                   " 自动语法高亮
 set number                  " 显示行号
@@ -255,9 +301,7 @@ set autoread
 endif
 
 " ---linux下透明背景设置
-if (g:islinux)
 	hi Normal  ctermfg=252 ctermbg=none 
-endif
 
 " ---开启保存 undo 历史功能
 set undofile
@@ -272,12 +316,12 @@ set completeopt-=preview
 set mouse=a
 
 
-
-function! Cp_sync()
-    if empty(glob("./sync.sh"))
-        !cp ~/.vim/tools/sync.sh  . 
-    endif
-endfunction
+"
+" function! Cp_sync()
+"     if empty(glob("./sync.sh"))
+"         !cp ~/.vim/tools/syn.sh  . 
+"     endif
+" endfunction
 
 
 function! ToggleQf()
@@ -362,8 +406,6 @@ filetype off
 
 
 
-let g:taglist_en = 1
-let g:OmniCppComplete_en = 1
 set rtp+=/usr/share/vim/vim81/bundle/vundle.vim 
 
 " vundle 管理的插件列表必须位于 vundle#begin() 和 vundle#end() 之间  
@@ -696,24 +738,24 @@ set shiftwidth=4
 set tabstop=4
 
 
- 
- "设置buffer的主题
-  let g:airline_theme='solarized' 
-
-  set laststatus=2  "永远显示状态栏
-  let g:airline_powerline_fonts = 1
-  let g:airline#extensions#tabline#enabled = 1
-
-    if !exists('g:airline_symbols')
-    let g:airline_symbols = {}
-  endif 
-  
-  " unicode symbols
-  let g:airline_left_sep = '>>'
-  let g:airline_left_sep = '>'
-  let g:airline_right_sep = '<<'
-  let g:airline_right_sep = '<'
-
+"  
+"  "设置buffer的主题
+"   let g:airline_theme='solarized' 
+"
+"   set laststatus=2  "永远显示状态栏
+"   let g:airline_powerline_fonts = 1
+"   let g:airline#extensions#tabline#enabled = 1
+"
+"     if !exists('g:airline_symbols')
+"     let g:airline_symbols = {}
+"   endif 
+"   
+"   " unicode symbols
+"   let g:airline_left_sep = '>>'
+"   let g:airline_left_sep = '>'
+"   let g:airline_right_sep = '<<'
+"   let g:airline_right_sep = '<'
+"
 
 
 
@@ -875,7 +917,7 @@ if (g:airline_en)
 	if (g:iswindows)
 		let g:airline_theme='kolor'
 	else
-		let g:airline_theme='dracula_new'
+		let g:airline_theme='dark'
 	endif
 
 	set guifont=Ubuntu_Mono_derivative_Powerlin:h15:cANSI " 字体字号设置：h13代表字号
