@@ -1,0 +1,26 @@
+
+ linux系统平台经常使用putty进行远程修改配置文件，从键盘获取字符，输出字符后按Backspace键删除时，会出现^H、^?、^a等字符，这对习惯了按Backspace键删除的用户来说，感觉非常别扭，虽然可以通过shift+Backspace组合键实现删除功能(笔记本电脑)
+可通过stty命令修改终端配置来实现Backspace删除功能：
+[oracle@junyii ~]$ id
+uid=500(oracle) gid=501(oinstall) groups=501(oinstall),502(dba) context=user_u:system_r:unconfined_t
+同时可通过stty -a查看所有的终端设置：
+[oracle@junyii ~]$ stty -a
+speed 38400 baud; rows 24; columns 80; line = 0;
+intr = ^C; quit = ^\; erase = ^?; kill = ^U; eof = ^D; eol = <undef>;
+eol2 = <undef>; start = ^Q; stop = ^S; susp = ^Z; rprnt = ^R; werase = ^W;
+lnext = ^V; flush = ^O; min = 1; time = 0;
+-parenb -parodd cs8 -hupcl -cstopb cread -clocal -crtscts
+-ignbrk -brkint -ignpar -parmrk -inpck -istrip -inlcr -igncr icrnl ixon -ixoff
+-iuclc -ixany -imaxbel
+opost -olcuc -ocrnl onlcr -onocr -onlret -ofill -ofdel nl0 cr0 tab0 bs0 vt0 ff0
+isig icanon iexten echo echoe echok -echonl -noflsh -xcase -tostop -echoprt
+echoctl echoke
+查看在VI配置器下面使用backspace 删除时提示输出那个字符
+例如：^H、^?、^a等字符
+如果输出的是：^? 字符 则使用以下命令:
+[oracle@junyii~]$ stty erase ^?再查看在VI配置器下面使用backspace 删除时是否可以直接删除字符啦。。。如果系统安装了ORACLE ,backspace 删除字符时同样有效
+---------------------
+作者：乌托帮主
+来源：CSDN
+原文：https://blog.csdn.net/zhaozhanyong/article/details/51965688?utm_source=copy
+版权声明：本文为博主原创文章，转载请附上博文链接！
