@@ -737,6 +737,9 @@ set smartindent
 set shiftwidth=4
 set tabstop=4
 
+" 关闭各种按键叮叮声音和闪屏
+set vb t_vb=
+au GuiEnter * set t_vb=
 
 "  
 "  "设置buffer的主题
