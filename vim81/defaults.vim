@@ -400,6 +400,25 @@ function!  CscopeSync()
 	call Cscope_init()
 endfunction
 
+
+function!  MakeSync()
+    "没有文件复制文件
+    if empty(glob("./Makefile"))
+        !cp /usr/share/vim/Makefile  . 
+    endif
+
+    if empty(glob("./make.sh"))
+        !cp /usr/share/vim/make.sh  . 
+    endif
+
+    if empty(glob("./.gitignore"))
+        !cp /usr/share/vim/.gitignore  . 
+    endif
+ 
+       !bash make.sh 
+endfunction
+
+
 " vundle 环境设置 
 set nocompatible              " be iMproved, required 
 filetype off  
@@ -601,6 +620,7 @@ nmap cl :make clean -j&&make clean_libs -j<CR>
 nmap <F2> :NERDTreeToggle<CR>
 nmap <c-g> :CtrlP<CR>
 nmap <F1> :call ToggleQf()<CR>
+nmap <F7> :call MakeSync()<CR><CR>
 nmap sy :call CscopeSync()<CR> 
 
 
