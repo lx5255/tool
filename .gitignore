@@ -3,3 +3,8 @@
 /.git
 /.svn
 *.d
+*.buf
+*.fw
+cscope.out
+tags
+filenametags
