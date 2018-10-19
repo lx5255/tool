@@ -1,6 +1,5 @@
 # ifeq ($(HOST_OS), windows)
 all:
-	echo exichlieddd
 	@bash make.sh
 
 clean:
