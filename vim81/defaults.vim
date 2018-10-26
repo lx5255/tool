@@ -1391,6 +1391,8 @@ endif
 "				"\ff"或者"ff"		Find this file
 "				"\fi"或者"fi"		Find files #including this file
 "				"\fd"或者"fd"		Find functions called by this function	
+call Cscope_init()
+
 function! Session_load()
 	" if &filetype == 'svim'
 	" if has("workspace.svim")
