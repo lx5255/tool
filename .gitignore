@@ -5,6 +5,7 @@
 *.d
 *.buf
 *.fw
+/vim81/bundle/
 cscope.out
 tags
 filenametags
