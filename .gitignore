@@ -2,9 +2,11 @@
 *.bin
 /.git
 /.svn
+/vim81/bundle/
 *.d
 *.buf
 *.fw
+/.fonts/
 cscope.out
 tags
 filenametags
