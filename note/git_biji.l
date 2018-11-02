@@ -226,6 +226,9 @@ $ git push [remote] --force
 
 # 推送所有分支到远程仓库
 $ git push [remote] --all
+
+推送本地分支到远程仓库
+git push https://github.com/lx5255/tool.git mybranch:mybranch
 九、撤销
 
 # 恢复暂存区的指定文件到工作区
