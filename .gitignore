@@ -2,10 +2,10 @@
 *.bin
 /.git
 /.svn
-/vim81/bundle/
 *.d
 *.buf
 *.fw
+*.app
 /.fonts/
 /vim81/bundle/
 cscope.out
