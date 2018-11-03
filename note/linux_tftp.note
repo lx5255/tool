@@ -1,0 +1,97 @@
+配置tftp
+
+方法一：（推荐方法）Ubuntu10.04 测试通过
+
+1.安装TFTP软件
+
+sudo apt-get install tftp-hpa tftpd-hpa
+
+tftp-hpa是客户端,tftpd-hpa是服务器端
+
+2.建立tftpboot目录，作为服务器的目录
+sudo mkdir ~/tftpboot
+释放权限：(服务器目录,需要设置权限为777,chomd 777)
+    sudo chmod 777 ~/tftpboot
+
+
+
+    3.配置TFTP服务器
+
+    sudo gedit /etc/default/tftpd-hpa
+
+    将原来的内容为:
+
+# /etc/default/tftpd-hpa
+
+    TFTP_USERNAME="tftp"
+#TFTP_DIRECTORY="/var/lib/tftpboot"  #修改为自己需要的路径，与上面创建的目录一致
+    TFTP_ADDRESS="0.0.0.0:69"
+#TFTP_OPTIONS="--secure"  #可以通过查看mantftpd,看各种参数的意义
+
+#修改为
+
+    TFTP_DIRECTORY="/home/shenhao/tftpboot"
+
+    TFTP_OPTIONS="-l -c -s"
+
+    3.重新启动TFTP服务
+
+    sudo service tftpd-hpa restart
+
+    4.测试下
+
+    $ cd ~/tftpboot echo "hello tftp service">>a.txt
+
+    $ echo "hello tftp service,put to tftp serive">>b.txt
+
+    $ tftp localhost
+
+    tftp> get a.txt
+
+    tftp> put b.txt
+
+    tftp> quit 
+
+    其中get是取得文件,put是将文件上传到TFTP服务器上。
+
+    方法二：
+
+    配置tftp服务的步骤： 
+    1、安装相关软件包：tftpd（服务端），tftp（客户端），xinetd 
+    sudo apt-get install tftpd tftp xinetd
+
+    2、建立配置文件（蓝色的目录是可以更改为其他地址的，例如/home/user/tftpboot） 
+    在/etc/xinetd.d/下建立一个配置文件tftp 
+    sudo vi tftp 
+    在文件中输入以下内容： 
+    service tftp 
+{ 
+    socket_type = dgram 
+        protocol = udp 
+        wait = yes 
+        user = root 
+        server = /usr/sbin/in.tftpd 
+        server_args = -s /tftpboot 
+        disable = no 
+        per_source = 11 
+        cps = 100 2 
+        flags = IPv4 
+} 
+保存退出
+
+3、建立tftp服务文件目录（上传文件与下载文件的位置），并且更改其权限 
+sudo mkdir /tftpboot
+
+sudu chmod 777 /tftpboot
+
+4、重新启动服务 
+sudo /etc/init.d/xinetd restart 
+至此tftp服务已经安装完成了，下面可以对其进行一下测试。（假设在当前目录下有一个测试文件test.txt） 
+$tftp 192.168.16.2 (本机的ip地址) 
+    tftp> get test.txt 
+    tftp> quit 
+    $
+
+    通过get命令，可以把当前目录下的test.txt文件，通过tftp上传到它的服务文件目录。这时，在/tftpboot下面会出现test.txt文件。通过put命令，可以从/tftpboot下,下载test.txt文件。这样就验证了tftp服务配置的正确性。当文件上传与下载结束后，可以通过quit命令退出。
+
+    严格按照以上步骤配置tftp服务，一般都可以成功。如果出现无法get或者put的时候，可以查看一下防火墙是否关闭。
