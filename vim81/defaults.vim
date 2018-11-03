@@ -425,7 +425,7 @@ filetype off
 
 
 
-set rtp+=/usr/share/vim/vim81/bundle/vundle.vim 
+set rtp+=/usr/share/vim/vim81/bundle/vundle 
 
 " vundle 管理的插件列表必须位于 vundle#begin() 和 vundle#end() 之间  
 call vundle#begin('/usr/share/vim/vim81/bundle') 
