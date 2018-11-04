@@ -1,0 +1,13 @@
+//输入忽略大小写配置
+首先，在宿主目录下创建.inputrc文件：
+a@allen ~ $ touch .inputrc
+然后，写入如下设置语句
+＃自动忽略大小写
+set completion-ignore-case on
+
+最后，重启shell即可．
+
+//查看系统中文件的使用情况
+df -h
+//查看当前目录下各个文件及目录占用空间大小
+du -sh *

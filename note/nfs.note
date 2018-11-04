@@ -1,0 +1,69 @@
+配置nfs服务器
+
+  
+在ubuntu下安装、配置nfs服务的步骤如下： 
+1、安装nfs 
+Ubuntu上默认是没有安装nfs服务器的，因此我们首先安装nfs服务器端： 
+$sudo apt-get install nfs-kernel-server 
+在一些文档中，提出还需要使用apt-get来手动安装nfs的客户端nfs-common，以及端口映射器portmap，但其实这是没有必要的，因为在安装nfs-kernel-server时，apt会自动为我们把它们安装好。
+
+2、配置/etc/exports 
+nfs允许挂载的目录及权限在文件/etc/exports中进行了定义。 
+例如，我们要将根目录下的rootfs目录共享出来，那么我们需要在/etc/exports文件末尾添加如下一行：
+
+/rootfs  *(rw,sync,no_root_squash) 
+其中： /rootfs是要共享的目录，
+
+            *代表允许所有的网络段访问，
+
+            rw是可读写权限,sync是资料同步写入内存和硬盘，
+
+no_root_squash是nfs客户端分享目录使用者的权限，如果客户端使用的是root用户，那么对于该共享目录而言，该客户端就具有root权限。
+
+其它nfs常用的参数有：
+
+ro 
+只读访问 
+rw 读写访问sync 所有数据在请求时写入共享 
+async 
+nfs在写入数据前可以响应请求 
+secure 
+nfs通过1024以下的安全TCP/IP端口发送 
+insecure 
+nfs通过1024以上的端口发送 
+wdelay 
+如果多个用户要写入nfs目录，则归组写入（默认） 
+no_wdelay 
+如果多个用户要写入nfs目录，则立即写入，当使用async时，无需此设置。 
+hide 在nfs共享目录中不共享其子目录 
+no_hide 
+共享nfs目录的子目录 
+subtree_check 
+如果共享/usr/bin之类的子目录时，强制nfs检查父目录的权限（默认） 
+no_subtree_check 
+和上面相对，不检查父目录权限 
+all_squash 
+共享文件的UID和GID映射匿名用户anonymous，适合公用目录。 
+no_all_squash 
+保留共享文件的UID和GID（默认） 
+root_squash 
+root用户的所有请求映射成如anonymous用户一样的权限（默认） 
+no_root_squas 
+root用户具有根目录的完全管理访问权限 
+anonuid=xxx 
+指定nfs服务器/etc/passwd文件中匿名用户的UID 
+anongid=xxx 
+指定nfs服务器/etc/passwd文件中匿名用户的GID
+
+3、重启服务 
+$sudo /etc/init.d/portmap restart 
+$sudo /etc/init.d/nfs-kernel-server restart
+
+4、测试nfs 
+此时可以运行以下命令来显示一下共享出来的目录： 
+$showmount -e 
+或者可以使用以下命令把它挂载在本地磁盘上，例如将/rootfs挂载到/mnt下： 
+$sudo mount -t nfs localhost:/rootfs /mnt
+
+可以运行df命令查看是否挂载成功。查看后可以使用以下命令卸载： 
+$ sudo umount /mnt
