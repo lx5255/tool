@@ -11,3 +11,21 @@ set completion-ignore-case on
 df -h
 //查看当前目录下各个文件及目录占用空间大小
 du -sh *
+udo apt-get install zsh
+
+
+2.1 安装zsh
+对于一般的Ubuntu系统，配置好正确的源之后，就能直接键入以下命令安装：
+sudo apt-get install zsh1
+2.2 配置zsh
+zsh的配置是一门大学问，这里不赘述，直接给出一个配置文件，大家可以下载后放入zsh配置文档直接使用。（我的一个法国朋友手配的，相当顺手）
+把.zshrc拷贝到相应用户的home目录即可 
+(也可以把你的bash的配置文件(~/.bash_prorile或者~/.profile等)给拷贝到zsh的配置文件~/.zshrc里，因为zsh兼容bash)
+2.3 取代bash，设为默认shell
+sudo usermod -s /bin/zsh username
+或者
+chsh -s /bin/zsh
+chsh -s `which zsh`
+如果要切换回去bash：
+chsh -s /bin/bash
+当然你实在不愿意把zsh当成默认的shell, 而又想使用它, 那么你可以每次进入是都使用zsh进入, 而输入exit退出
