@@ -8,24 +8,28 @@
 # for common
 export common_filter_path="\
 			 ! -path "*git*" \
-			 ! -path "*alpha*"\
-			 ! -path "*avr32*"\
-			 ! -path "*arm26*"\
-			 ! -path "*blackfin*"\
-			 ! -path "*cris*"\
-			 ! -path "*h8300*"\
-			 ! -path "*i386*"\
-			 ! -path "*ia64*"\
-			 ! -path "*m32r*"\
-			 ! -path "*m68k*"\
-			 ! -path "*mips*"\
-			 ! -path "*parisc*"\
-			 ! -path "*powerpc*"\
-			 ! -path "*s390*"\
-			 ! -path "*sparc*"\
-			 ! -path "*v850*"\
-			 ! -path "*x86_64*"\
-			 ! -path "*xtensa*""\
+			 ! -path ".*alpha*"\
+			 ! -path ".*avr32*"\
+			 ! -path ".*arm26*"\
+			 ! -path ".*blackfin*"\
+			 ! -path ".*cris*"\
+			 ! -path ".*arch/frv*"\
+			 ! -path ".*h8300*"\
+			 ! -path ".*i386*"\
+			 ! -path ".*ia64*"\
+			 ! -path ".*m32r*"\
+			 ! -path ".*m68k*"\
+			 ! -path ".*mips*"\
+			 ! -path ".*parisc*"\
+			 ! -path ".*powerpc*"\
+			 ! -path ".*arch/ppc*"\
+			 ! -path ".*s390*"\
+			 ! -path ".*arch/sh*"\
+			 ! -path ".*arch/um*"\
+			 ! -path ".*sparc*"\
+			 ! -path ".*v850*"\
+			 ! -path ".*x86_64*"\
+			 ! -path ".*xtensa*""
 			 # ! -path ".*ac461x_uboot_lib*" \
 
 # for cscope/tag
