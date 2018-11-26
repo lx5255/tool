@@ -31,3 +31,91 @@ sudo make install
 
 启动
 qemu-system-arm -M mini2440 -serial stdio -mtdblock nand.bin -usbdevice mouse
+
+
+需要修改两个地方就可以使qemu支持256M以及以上容量的NAND FLASH, 
+
+一、
+
+# vim qemu_src/hw/mini2440.c
+
+找到下面这第372行代码:
+
+    /* Check the boot mode */
+    switch (mini->boot_mode) {
+        case BOOT_NAND:
+            sram_base = S3C_SRAM_BASE_NANDBOOT;
+            int size = bdrv_getlength(drives_table[nand_idx].bdrv);
+            switch (size) {
+                case 2 * 65536 * (512 + 16):
+                    nand_cid = 0x76;
+                    break;
+                case 4 * 65536 * (512 + 16):
+                    nand_cid = 0xf1;
+                    break;
+                default:
+                    printf("%s: Unknown NAND size/id %d (%dMB) defaulting to old 64MB\n",
+                            __func__, size, ((size / (512 + 16)) * 512) / 1024 / 1024);
+                    break;
+            }
+            break;
+
+在default: 语句上方加入下面这三行：
+
+        case 8 * 65536 * (512 + 16):
+                    nand_cid = 0xda;                       // 256MB flash == 0xda
+                    break;
+
+如果要支持比如 512M 容量的 NAND FLASH ， 那么可以模仿上面的代码，跟着加入下面三行：
+
+        case 16 * 65536 * (512 + 16):
+                    nand_cid = 0xdc;                       // 512MB flash == 0xdc
+                    break;
+
+至于里面为什么是 512 +16 ，可以看看这个网页：http://bbs.eeworld.com.cn/thread-305322-1-1.html
+
+至于 0xda 是什么东西，可以看看 qemu_src/nand.c 中下面这些内容：
+/* Information based on Linux drivers/mtd/nand/nand_ids.c */
+static const struct {
+    int size;
+    int width;
+    int page_shift;
+    int erase_shift;
+    uint32_t options;
+} nand_flash_ids[0x100] = {
+................................
+    [0x76] = { 64, 8, 9, 5, 0 },
+................................
+  /*
+     * These are the new chips with large page size. The pagesize and the
+     * erasesize is determined from the extended id bytes
+     */
+# define LP_OPTIONS    (NAND_SAMSUNG_LP | NAND_NO_READRDY | NAND_NO_AUTOINCR)
+# define LP_OPTIONS16    (LP_OPTIONS | NAND_BUSWIDTH_16)
+......................................................................
+  /* 1 Gigabit */        [0xa1] = { 128, 8, 0, 0, LP_OPTIONS },        [0xf1] = { 128, 8, 0, 0, LP_OPTIONS },       [0xb1] = { 128, 16, 0, 0, LP_OPTIONS16 },       [0xc1] = { 128, 16, 0, 0, LP_OPTIONS16 },
+    /* 2 Gigabit */
+    [0xaa] = { 256,    8,    0, 0, LP_OPTIONS },
+    [0xda] = { 256,    8,    0, 0, LP_OPTIONS },
+................................................................
+
+二、
+还要修改一个文件，那就是 
+
+vim qemu_src/mini2440/mini2440_start.sh 
+
+修改为以下内容:
+echo Starting in $base
+#name_nand="$base/mini2440_nand64.bin"
+#name_nand="$base/mini2440_nand128.bin"
+name_nand="$base/mini2440_nand256.bin"
+if [ ! -f "$name_nand" ];then
+ echo $0 : creating NAND empty image : "$name_nand"
+# dd if=/dev/zero of="$name_nand" bs=528 count=131072
+# dd if=/dev/zero of="$name_nand" bs=2112 count=65536 
+dd if=/dev/zero of="$name_nand" bs=135168 count=2048
+
+..........................................................
+至于为什么bs 和 count 要取那些值，可以看看这个 http://blog.163.com/chenfang7977@yeah/blog/static/128274196201008101048689/
+
+三、修改完上述两个文件，然后，再重新把 qemu 编译一遍，就可以使用命令  sudo sh mini2440/mini2440_start.sh  来重新启动 qemu-uboot-mini2440了
