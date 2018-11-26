@@ -1,0 +1,33 @@
+ni2440的QEMU虚拟机，然后编译，安装QEMU：
+$ cd ~
+$ mkdir local
+$ git clone git://repo.or.cz/qemu/mini2440.git qemu
+$ cd qemu
+$ ./configure --target-list=arm-softmmu --prefix=$HOME/local
+$ make
+$ make install
+此时QEMU可执行程序已经安装在 ~/local/bin 目录下了，为了方便使用，将其添加到环境变量里：
+$ export PATH=$HOME/local/bin:$PATH
+验证一下正确安装与否：
+$ qemu-system-arm --version
+如果输出了QEMU的版本等信息，则安装成功。
+
+可能会出现的库问题解决：
+sudo apt-get install zlib1g-dev
+sudo apt-get install libsdl-dev
+
+可能需要的补丁
+patch configure configure.patch
+
+FLASH镜像文件生成工具
+git clone https://github.com/cailiwei/flashimg.git
+
+./autogen.sh （要求autoconf版本大于2.67）
+./configure 
+make 
+sudo make install
+
+./flashimg -s 64M -t nand -f nand.bin -p uboot.part -w boot,u-boot.bin -w kernel,uImage -w root,rootfs.jffs2 -z 512 
+
+启动
+qemu-system-arm -M mini2440 -serial stdio -mtdblock nand.bin -usbdevice mouse
