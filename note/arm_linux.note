@@ -1,0 +1,9 @@
+烧写内核（kernel） 
+1：下载命令 tftp 30000000 uImage_4.3 
+2: 插除命令 nand erase kernel 
+3: 烧写 nand write.jffs2 30000000 kernel
+
+烧写文件系统（fs） 
+1：下载命令 tftp 30000000 fs_qtopia.yaffs2 
+2: 插除命令 nand erase root 
+3: 烧写 nand write.jffs2 30000000 260000 地址大小（xxxxxx）
