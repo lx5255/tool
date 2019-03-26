@@ -1,0 +1,10 @@
+1、获取当前指针指向的字符串
+<cword>
+
+2、打开辅助显示窗口
+botright copen 6
+
+3、重新加载vimrc
+source ~/.vimrc
+
+
