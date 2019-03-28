@@ -119,3 +119,13 @@ dd if=/dev/zero of="$name_nand" bs=135168 count=2048
 至于为什么bs 和 count 要取那些值，可以看看这个 http://blog.163.com/chenfang7977@yeah/blog/static/128274196201008101048689/
 
 三、修改完上述两个文件，然后，再重新把 qemu 编译一遍，就可以使用命令  sudo sh mini2440/mini2440_start.sh  来重新启动 qemu-uboot-mini2440了
+
+四、QUME+GDB调试。
+1、启动QUME时加-s
+-s是-gdb tcp::1234缩写，监听1234端口，在GDB中可以通过target remote localhost:1234连接
+2、启动GDB $gdb vmlinux
+3、连接GDB &target remote localhost:1234
+4、设置断点 b func
+5、运行 c 
+
+
